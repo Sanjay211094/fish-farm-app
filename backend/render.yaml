@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: fish-farm-api
+    runtime: node
+    buildCommand: npm install
+    startCommand: node src/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: FRONTEND_URL
+        value: https://YOUR-FIREBASE-APP.web.app
+    disk:
+      name: sqlite-data
+      mountPath: /data
+      sizeGB: 1
