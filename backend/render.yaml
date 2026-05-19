@@ -13,7 +13,3 @@ services:
         value: 7d
       - key: FRONTEND_URL
         value: https://YOUR-FIREBASE-APP.web.app
-    disk:
-      name: sqlite-data
-      mountPath: /data
-      sizeGB: 1

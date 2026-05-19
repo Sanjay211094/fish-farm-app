@@ -1,16 +1,8 @@
 const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 const path = require('path');
-const fs = require('fs');
 
-// On Render, /data is a persistent disk; locally falls back to project root
-const DB_PATH = process.env.DB_PATH ||
-  (process.env.NODE_ENV === 'production'
-    ? '/data/fish_farm.db'
-    : path.join(__dirname, '../../fish_farm.db'));
-
-// Ensure the directory exists before opening the database
-fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../../fish_farm.db');
 
 let db;
 
