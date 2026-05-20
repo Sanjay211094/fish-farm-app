@@ -8,3 +8,4 @@ backend/fish_farm.db-wal
 .env
 .env.production
 *.log
+.firebase/
