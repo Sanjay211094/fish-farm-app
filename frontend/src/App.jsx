@@ -5,6 +5,7 @@ import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import Customers from './pages/Customers'
 import Orders from './pages/Orders'
+import Settings from './pages/Settings'
 
 function PrivateRoute({ children }) {
   const { user } = useAuth()
@@ -26,6 +27,7 @@ export default function App() {
             <Route index element={<Dashboard />} />
             <Route path="customers" element={<Customers />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

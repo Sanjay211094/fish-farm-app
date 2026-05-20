@@ -50,4 +50,31 @@ router.get('/me', authMiddleware, (req, res) => {
   res.json(user);
 });
 
+router.put('/profile', authMiddleware, (req, res) => {
+  const { full_name, email } = req.body;
+  getDb()
+    .prepare('UPDATE users SET full_name=?, email=? WHERE id=?')
+    .run(full_name || null, email || null, req.user.id);
+  const updated = getDb()
+    .prepare('SELECT id, username, email, full_name, created_at FROM users WHERE id = ?')
+    .get(req.user.id);
+  res.json(updated);
+});
+
+router.put('/password', authMiddleware, (req, res) => {
+  const { current_password, new_password } = req.body;
+  if (!current_password || !new_password)
+    return res.status(400).json({ message: 'current_password and new_password are required' });
+  if (new_password.length < 6)
+    return res.status(400).json({ message: 'New password must be at least 6 characters' });
+
+  const user = getDb().prepare('SELECT * FROM users WHERE id = ?').get(req.user.id);
+  if (!bcrypt.compareSync(current_password, user.password))
+    return res.status(401).json({ message: 'Current password is incorrect' });
+
+  const hashed = bcrypt.hashSync(new_password, 10);
+  getDb().prepare('UPDATE users SET password=? WHERE id=?').run(hashed, req.user.id);
+  res.json({ message: 'Password updated successfully' });
+});
+
 module.exports = router;
